@@ -1,0 +1,21 @@
+dependencies: \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapCircle.m \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapCircle.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert+MapKit.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapCoordinate.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMap.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/Callout/SMCalloutView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h
