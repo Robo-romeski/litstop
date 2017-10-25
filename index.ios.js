@@ -1,3 +1,9 @@
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
+
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -9,9 +15,10 @@ import {
 import App from './components/App';
 import { Examples } from '@shoutem/ui';
 
-export default class LitStop extends Component {
+export default class LunchSpotApp extends Component {
     render() {
         return (<App />);
     }
 }
-AppRegistry.registerComponent('LitStop', () => LitStop);
+
+AppRegistry.registerComponent('LunchSpotApp', () => LunchSpotApp);
