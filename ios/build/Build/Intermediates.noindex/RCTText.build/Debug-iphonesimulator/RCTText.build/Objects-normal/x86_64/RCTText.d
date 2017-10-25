@@ -1,0 +1,21 @@
+dependencies: \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native/Libraries/Text/RCTText.m \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native/Libraries/Text/RCTText.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUtils.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native/Libraries/Text/RCTShadowText.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTShadowView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h

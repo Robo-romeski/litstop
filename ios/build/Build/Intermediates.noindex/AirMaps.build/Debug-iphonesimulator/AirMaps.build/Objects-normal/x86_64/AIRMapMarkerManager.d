@@ -1,0 +1,33 @@
+dependencies: \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapMarkerManager.m \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapMarkerManager.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTViewManager.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeModule.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTDefines.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAnimationType.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBorderStyle.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTLog.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTAssert.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTPointerEvents.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTTextDecorationLineType.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/Yoga.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGEnums.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/yoga/YGMacros.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTEventDispatcher.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridge.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTBridgeDelegate.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTJavaScriptLoader.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTFrameUpdate.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTInvalidating.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/UIView+React.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTComponent.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert+CoreLocation.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTUIManager.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTRootView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapMarker.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMapCallout.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTView.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/ios/build/Build/Products/Debug-iphonesimulator/include/React/RCTConvert+MapKit.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/AIRMap.h \
+  /Users/ElroyJetson/Documents/Apps/litstop/node_modules/react-native-maps/ios/AirMaps/Callout/SMCalloutView.h
