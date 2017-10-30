@@ -1,28 +1,13 @@
 import React, { Component } from 'react';
 import { AppRegistry, StyleSheet, View } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-
+// import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import App from './components/App.js';
 export default class Litstop extends Component {
   render() {
     return (
-      <MapView
-  provider={ PROVIDER_GOOGLE }
-  style={ styles.container }
-  initialRegion={{
-    latitude: 39.7392,
-    longitude: -104.9903,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  }}
-/>
+      <App/>
     );
   }
 }
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    width: '100%',
-  }
-});
 
 AppRegistry.registerComponent('litstop', ()=> Litstop);
