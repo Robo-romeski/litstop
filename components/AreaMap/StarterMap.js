@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component, Text } from 'react';
 import MapView from 'react-native-maps'
 import { Subtitle, Title } from '@shoutem/ui';
 import styles from './styles';
+import Recommendation from './Area.js';
 
 const AreaMap = ({ mapRegion, gpsAccuracy, recommendations, lookingFor,
-                              headerLocation, onRegionChange }) => (
+                              headerLocation, onRegionChange, data }) => (
 
     <MapView.Animated region={mapRegion}
                       style={styles.fullscreen}
@@ -14,19 +15,15 @@ const AreaMap = ({ mapRegion, gpsAccuracy, recommendations, lookingFor,
             {lookingFor ? `${lookingFor} in` : ''} {headerLocation}
         </Title>
 
-        <MapView.Circle center={mapRegion}
-                        radius={gpsAccuracy*1.5}
-                        strokeWidth={0.5}
-                        strokeColor="rgba(66, 180, 230, 1)"
-                        fillColor="rgba(66, 180, 230, 0.2)"
-                        />
-
-        <MapView.Circle center={mapRegion}
-                        radius={5}
-                        strokeWidth={0.5}
-                        strokeColor="rgba(66, 180, 230, 1)"
-                        fillColor="rgba(66, 180, 230, 1)"
-                        />
+          {data && data.map((d)=> {
+            console.log("D", d)
+            return(
+            <MapView.Marker
+    coordinate={d.place.location}
+    title={d.place.location.title}
+    description={d.place.location.description}
+  />
+        )})}
 
 
     </MapView.Animated>
