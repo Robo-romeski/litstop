@@ -15,15 +15,17 @@ const AreaMap = ({ mapRegion, gpsAccuracy, recommendations, lookingFor,
             {lookingFor ? `${lookingFor} in` : ''} {headerLocation}
         </Title>
 
-          {data && data.map((d)=> {
-            console.log("D", d)
+          {data && data.map((d,i)=> {
+            console.log("D", d);
             return(
             <MapView.Marker
+            key={i}
     coordinate={d.place.location}
-    title={d.place.location.title}
-    description={d.place.location.description}
+    title={d.category}
+    description={d.description}
   />
-        )})}
+        )}
+      )}
 
 
     </MapView.Animated>
