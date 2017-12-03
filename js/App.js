@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text } from 'react-native';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import { Screen, Spinner } from '@shoutem/ui';
-import CenterMap from './AreaMap/AreaMap.js';
-import StarterMap from './AreaMap/StarterMap.js'
-import styles from './AreaMap/styles.js';
+import CenterMap from './components/AreaMap/AreaMap.js';
+import StarterMap from './components/AreaMap/StarterMap.js'
+import styles from './components/AreaMap/styles.js';
 import SpeechNotification from 'react-native-speech-notification';
 import axios from 'axios';
 
