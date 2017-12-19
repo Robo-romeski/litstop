@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { login } from '../../store/actions/auth';
-import { ScrollView, Text, TextInput, View, Button } from 'react-native';
+import {  Button } from 'react-native';
+import { TextInput, Card, ScrollView, Image, View, Subtitle, Text, Caption } from '@shoutem/ui';
+import Firebase from 'firebase';
 
 class Login extends Component {
     constructor(props){
@@ -11,6 +13,10 @@ class Login extends Component {
             username: '',
             password: ''
         };
+    }
+
+    componentWillMount(){
+        console.log(Firebase);
     }
 
     userLogin(e) {

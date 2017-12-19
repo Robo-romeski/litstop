@@ -9,6 +9,7 @@
   "dependencies": {
     "@shoutem/ui": "^0.21.3",
     "axios": "^0.17.0",
+    "firebase": "^4.8.1",
     "native-base": "^2.3.3",
     "prop-types": "^15.6.0",
     "query-string": "^5.0.1",
