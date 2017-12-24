@@ -14,10 +14,7 @@ class Login extends Component {
             password: ''
         };
     }
-
-    componentWillMount(){
-        console.log(Firebase);
-    }
+    
 
     userLogin(e) {
         this.props.onLogin(this.state.username, this.state.password);
