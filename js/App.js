@@ -1,25 +1,43 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import { connect } from 'react-redux';
 import Login from './components/User/Login.js';
 import MainMap from './components/MainMap/App.js';
 import Firebase from 'firebase';
+import { firebaseRef } from './firebase';
 
 class Application extends Component {
-  componentWillMount(){
-    Firebase.initializeApp({
-      apiKey: 'AIzaSyALmrNSukZg4TeIDklKRoKKsCFHivD2SeA',
-      authDomain: 'litstop-1508710637497.firebaseapp.com',
-      databaseURL: 'https://litstop-1508710637497.firebaseio.com',
-      projectId: 'litstop-1508710637497',
-      storageBucket: 'litstop-1508710637497.appspot.com',
-      messagingSenderId: '431041735118'
+  constructor(props) {
+    super(props);
+    this.state = {
+      firebaseUserLoggedIn: false
+    }
+  }
+  componentWillMount = async () => {
+    const user = await AsyncStorage.getItem("user");
+    console.log(user);
+    if (user) {
+      this.setState({
+        firebaseUserLoggedIn: true
+      })
+    }
+    AsyncStorage.removeItem("user");
+  }
+
+
+  login = () => {
+    this.setState({
+      firebaseUserLoggedIn: true
     })
   }
+
+
+
   render() {
-    if(this.props.isLoggedIn){
-      return <MainMap/>;
-    }else{
-      return <Login/>;
+    if (this.state.firebaseUserLoggedIn) {
+      return <MainMap />;
+    } else {
+      return <Login login={this.login} />;
     }
   }
 }

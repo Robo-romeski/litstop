@@ -7,6 +7,7 @@ import StarterMap from '../AreaMap/StarterMap.js'
 import styles from '../AreaMap/styles.js';
 import SpeechNotification from 'react-native-speech-notification';
 import axios from 'axios';
+import VoiceRecognition from '../VoiceRecognition/Voice';
 
 let words = 'whats popping Devin!';
 const API_END_POINT = 'https://localhost:7000/events?lat=40.660672&lng=-73.877380&distance=10'
@@ -97,6 +98,7 @@ export default class AreaMap extends Component {
 
 return(
   <Screen>
+<VoiceRecognition/>
 <StarterMap {...this.state} />
   {mapRegion &&
     <Text> {mapRegion.latitude}, {mapRegion.longitude}</Text>
