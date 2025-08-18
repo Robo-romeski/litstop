@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -30,7 +32,6 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-/litstop/build/
 
 # Symbolication related
 app.*.symbols
@@ -42,36 +43,3 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-/litstop/android/app/debug
-/litstop/android/app/profile
-/litstop/android/app/release
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Firebase
-google-services.json
-GoogleService-Info.plist
-firebase_options.dart
-
-# iOS
-/ios/Pods/
-/litstop/ios/Pods/
-
-# macOS
-/macos/Pods/
-/litstop/macos/Pods/
-
-# Editor directories
-.cursor/
-.windsurf/
-.taskmaster/
-
-# Project specific
-/Projects/
-/scripts/
-/tasks/
-temp-config.json
-completion.txt
