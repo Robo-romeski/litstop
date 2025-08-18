@@ -5,9 +5,11 @@
 *.swp
 .DS_Store
 .atom/
+.build/
 .buildlog/
 .history
 .svn/
+.swiftpm/
 migrate_working_dir/
 
 # IntelliJ related
@@ -47,8 +49,6 @@ app.*.map.json
 /litstop/android/app/release
 
 # Environment variables
-.env
-.env.local
 .env.*.local
 
 # Firebase
@@ -75,3 +75,5 @@ firebase_options.dart
 /tasks/
 temp-config.json
 completion.txt
+config.bat
+node_modules
