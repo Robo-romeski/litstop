@@ -42,11 +42,9 @@ class ThemeProvider with ChangeNotifier {
             ),
           ),
         ),
-        cardTheme: CardTheme(
+        cardTheme: const CardThemeData(
           elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          surfaceTintColor: Colors.transparent,
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(
@@ -87,12 +85,9 @@ class ThemeProvider with ChangeNotifier {
             ),
           ),
         ),
-        cardTheme: CardTheme(
-          color: const Color(0xFF1E1E1E),
+        cardTheme: const CardThemeData(
           elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          surfaceTintColor: Colors.transparent,
         ),
         inputDecorationTheme: InputDecorationTheme(
           border: OutlineInputBorder(

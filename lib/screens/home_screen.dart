@@ -24,6 +24,7 @@ import '../widgets/route_planner_sheet.dart';
 import '../widgets/poi_details_sheet.dart';
 import '../services/navigation_service.dart';
 import 'fatigue_test_screen.dart';
+import '../widgets/ai_controller_button.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -908,6 +909,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 : _mapError != null
                     ? _buildMapError()
                     : _buildMapContent(),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: const [
+                AIControllerButton(),
+              ],
+            ),
           ),
           Container(
             padding: const EdgeInsets.all(16),
