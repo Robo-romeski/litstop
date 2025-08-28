@@ -64,7 +64,8 @@ class AIControllerService {
     final normalized = prompt.toLowerCase().trim();
 
     // Safety recording
-    if (normalized.contains('record mode') || normalized.contains('start recording')) {
+    if (normalized.contains('record mode') ||
+        normalized.contains('start recording')) {
       final safeWord = _extractSafeWord(normalized) ?? 'pineapple';
       SafetyRecorderService.instance.startRecording(safeWord: safeWord);
       return 'Safety recording started. Say "$safeWord" to stop.';
@@ -75,12 +76,17 @@ class AIControllerService {
     }
 
     // Turn off lyft/uber (placeholder)
-    if (normalized.contains('turn off lyft') || normalized.contains('go offline lyft') || normalized.contains('go offline uber') || normalized.contains('turn off uber')) {
+    if (normalized.contains('turn off lyft') ||
+        normalized.contains('go offline lyft') ||
+        normalized.contains('go offline uber') ||
+        normalized.contains('turn off uber')) {
       return 'Provider status control is not yet connected. I can add this once provider APIs are wired.';
     }
 
     // Make a route from here to <destination> stopping for ice cream
-    if (normalized.contains('make a route') || normalized.startsWith('route to') || normalized.startsWith('navigate to')) {
+    if (normalized.contains('make a route') ||
+        normalized.startsWith('route to') ||
+        normalized.startsWith('navigate to')) {
       final current = locationProvider.currentPosition;
       if (current == null) return 'I do not have your current location yet.';
 
@@ -96,7 +102,8 @@ class AIControllerService {
         if (suggestions.isEmpty) {
           return 'I could not find "$destName".';
         }
-        final details = await placeService.getPlaceDetails(suggestions.first.placeId);
+        final details =
+            await placeService.getPlaceDetails(suggestions.first.placeId);
         final start = LatLng(current.latitude, current.longitude);
         final end = details.location;
 
@@ -107,7 +114,8 @@ class AIControllerService {
 
         // Optional stop (ice cream)
         List<PointOfInterest> pois = [];
-        if (normalized.contains('ice cream') || normalized.contains('icecream')) {
+        if (normalized.contains('ice cream') ||
+            normalized.contains('icecream')) {
           pois = await poiProvider.findPOIsAlongRoute(
             start: start,
             end: end,
@@ -118,7 +126,9 @@ class AIControllerService {
         // Notify user via UI
         final messenger = ScaffoldMessenger.maybeOf(context);
         messenger?.showSnackBar(
-          SnackBar(content: Text('Route ready to ${details.name}${pois.isNotEmpty ? ' with ${pois.length} stops' : ''}')),
+          SnackBar(
+              content: Text(
+                  'Route ready to ${details.name}${pois.isNotEmpty ? ' with ${pois.length} stops' : ''}')),
         );
 
         return 'Planned a route to ${details.name}. '
@@ -149,5 +159,3 @@ class AIControllerService {
     return null;
   }
 }
-
-

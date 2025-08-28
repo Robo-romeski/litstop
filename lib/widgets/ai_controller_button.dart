@@ -39,6 +39,7 @@ class _PromptSheetState extends State<_PromptSheet> {
   final _controller = TextEditingController();
   bool _busy = false;
   String? _response;
+  bool _listening = false;
 
   @override
   void dispose() {
@@ -82,6 +83,34 @@ class _PromptSheetState extends State<_PromptSheet> {
               maxLines: 3,
             ),
             const SizedBox(height: 12),
+            Row(
+              children: [
+                IconButton(
+                  tooltip: _listening ? 'Listening…' : 'Speak',
+                  onPressed: _busy
+                      ? null
+                      : () async {
+                          // Placeholder for speech_to_text integration
+                          setState(() => _listening = true);
+                          await Future.delayed(const Duration(milliseconds: 600));
+                          if (!mounted) return;
+                          setState(() => _listening = false);
+                          // When integrated, append recognized text:
+                          // _controller.text = '${_controller.text} <recognized>';
+                        },
+                  icon: Icon(_listening ? Icons.mic : Icons.mic_none),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    _listening
+                        ? 'Listening… say your prompt, then tap Submit.'
+                        : 'Tip: tap the mic to speak your prompt.',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
             if (_response != null)
               Padding(
                 padding: const EdgeInsets.only(bottom: 8),
@@ -120,5 +149,3 @@ class _PromptSheetState extends State<_PromptSheet> {
     );
   }
 }
-
-
