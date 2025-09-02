@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart';
 import '../services/ai_controller_service.dart';
 
 class AIControllerButton extends StatelessWidget {
@@ -40,10 +42,14 @@ class _PromptSheetState extends State<_PromptSheet> {
   bool _busy = false;
   String? _response;
   bool _listening = false;
+  stt.SpeechToText? _speech;
+  final _tts = FlutterTts();
+  final List<String> _history = [];
 
   @override
   void dispose() {
     _controller.dispose();
+    _speech?.stop();
     super.dispose();
   }
 
@@ -90,13 +96,38 @@ class _PromptSheetState extends State<_PromptSheet> {
                   onPressed: _busy
                       ? null
                       : () async {
-                          // Placeholder for speech_to_text integration
+                          _speech ??= stt.SpeechToText();
+                          final available = await _speech!.initialize(
+                            onStatus: (s) {},
+                            onError: (e) {},
+                          );
+                          if (!available) {
+                            if (!mounted) return;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text('Speech not available')),
+                            );
+                            return;
+                          }
                           setState(() => _listening = true);
-                          await Future.delayed(const Duration(milliseconds: 600));
-                          if (!mounted) return;
-                          setState(() => _listening = false);
-                          // When integrated, append recognized text:
-                          // _controller.text = '${_controller.text} <recognized>';
+                          await _speech!.listen(
+                            onResult: (r) {
+                              final text = r.recognizedWords.trim();
+                              if (text.isNotEmpty) {
+                                _controller.text =
+                                    (_controller.text.trim().isEmpty)
+                                        ? text
+                                        : '${_controller.text} $text';
+                                _controller.selection =
+                                    TextSelection.fromPosition(
+                                  TextPosition(offset: _controller.text.length),
+                                );
+                              }
+                              if (r.finalResult) {
+                                setState(() => _listening = false);
+                              }
+                            },
+                          );
                         },
                   icon: Icon(_listening ? Icons.mic : Icons.mic_none),
                 ),
@@ -116,6 +147,22 @@ class _PromptSheetState extends State<_PromptSheet> {
                 padding: const EdgeInsets.only(bottom: 8),
                 child: Text(_response!),
               ),
+            if (_history.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Wrap(
+                  spacing: 8,
+                  runSpacing: 4,
+                  children: _history
+                      .take(6)
+                      .map((h) => ActionChip(
+                            label: Text(h, overflow: TextOverflow.ellipsis),
+                            onPressed: () =>
+                                setState(() => _controller.text = h),
+                          ))
+                      .toList(),
+                ),
+              ),
             FilledButton.icon(
               onPressed: _busy
                   ? null
@@ -132,7 +179,18 @@ class _PromptSheetState extends State<_PromptSheet> {
                       setState(() {
                         _busy = false;
                         _response = result;
+                        if (text.isNotEmpty) {
+                          _history.insert(0, text);
+                          if (_history.length > 10) _history.removeLast();
+                        }
                       });
+                      // Speak confirmation for DO mode or short ASK responses
+                      try {
+                        if (_mode == 'DO' || result.length <= 120) {
+                          await _tts.setLanguage('en-US');
+                          await _tts.speak(result);
+                        }
+                      } catch (_) {}
                     },
               icon: _busy
                   ? const SizedBox(

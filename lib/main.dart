@@ -16,6 +16,9 @@ import 'providers/secure_data_provider.dart';
 import 'providers/poi_provider.dart';
 import 'providers/route_suggestions_provider.dart';
 import 'providers/fatigue_monitoring_provider.dart';
+import 'providers/provider_status_provider.dart';
+import 'services/api_service.dart';
+import 'services/provider_status_service.dart';
 import 'utils/secure_storage.dart';
 import 'widgets/fatigue_alert_manager.dart';
 
@@ -120,6 +123,14 @@ class MyApp extends StatelessWidget {
               ),
         ),
         ChangeNotifierProvider(create: (_) => FatigueMonitoringProvider()),
+        ChangeNotifierProvider(create: (_) {
+          final provider = ProviderStatusProvider();
+          // Configure backend proxy (replace baseUrl/apiKey as appropriate)
+          final api =
+              ApiService(baseUrl: 'https://celesti-nav.com', apiKey: null);
+          provider.setService(ProviderStatusService(api: api));
+          return provider;
+        }),
       ],
       child: Consumer<ThemeProvider>(
         builder: (context, themeProvider, _) {

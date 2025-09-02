@@ -25,6 +25,7 @@ import '../widgets/poi_details_sheet.dart';
 import '../services/navigation_service.dart';
 import 'fatigue_test_screen.dart';
 import '../widgets/ai_controller_button.dart';
+import '../widgets/provider_status_indicators.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -912,10 +913,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Padding(
             padding: const EdgeInsets.only(left: 16, right: 16, bottom: 8),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: const [
                 AIControllerButton(),
+                SizedBox(height: 8),
+                ProviderStatusIndicators(),
               ],
             ),
           ),

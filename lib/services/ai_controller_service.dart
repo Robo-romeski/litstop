@@ -8,6 +8,7 @@ import '../providers/poi_provider.dart';
 import '../services/place_service.dart';
 import '../models/point_of_interest.dart';
 import 'safety_recorder_service.dart';
+import '../providers/provider_status_provider.dart';
 
 /// Simple intent-based AI controller to route ASK/DO commands to app features
 class AIControllerService {
@@ -75,12 +76,39 @@ class AIControllerService {
       return 'Safety recording stopped.';
     }
 
-    // Turn off lyft/uber (placeholder)
+    // Provider/global status toggles
+    final status = context.read<ProviderStatusProvider>();
     if (normalized.contains('turn off lyft') ||
-        normalized.contains('go offline lyft') ||
-        normalized.contains('go offline uber') ||
-        normalized.contains('turn off uber')) {
-      return 'Provider status control is not yet connected. I can add this once provider APIs are wired.';
+        normalized.contains('go offline lyft')) {
+      status.setProviderOnline(RideProvider.lyft, false);
+      return 'Lyft set to offline.';
+    }
+    if (normalized.contains('turn off uber') ||
+        normalized.contains('go offline uber')) {
+      status.setProviderOnline(RideProvider.uber, false);
+      return 'Uber set to offline.';
+    }
+    if (normalized.contains('turn on lyft') ||
+        normalized.contains('go online lyft')) {
+      status.setProviderOnline(RideProvider.lyft, true);
+      return 'Lyft set to online.';
+    }
+    if (normalized.contains('turn on uber') ||
+        normalized.contains('go online uber')) {
+      status.setProviderOnline(RideProvider.uber, true);
+      return 'Uber set to online.';
+    }
+    if (normalized.contains('go offline all') ||
+        normalized.contains('turn off all') ||
+        (normalized == 'go offline')) {
+      status.setGlobalOnline(false);
+      return 'Global status set to offline.';
+    }
+    if (normalized.contains('go online all') ||
+        normalized.contains('turn on all') ||
+        (normalized == 'go online')) {
+      status.setGlobalOnline(true);
+      return 'Global status set to online.';
     }
 
     // Make a route from here to <destination> stopping for ice cream
