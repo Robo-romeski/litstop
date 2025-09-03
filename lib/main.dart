@@ -123,12 +123,18 @@ class MyApp extends StatelessWidget {
               ),
         ),
         ChangeNotifierProvider(create: (_) => FatigueMonitoringProvider()),
-        ChangeNotifierProvider(create: (_) {
+        ChangeNotifierProvider(create: (context) {
           final provider = ProviderStatusProvider();
-          // Configure backend proxy (replace baseUrl/apiKey as appropriate)
+          // Configure backend proxy to celesti-nav.com and attach Firebase ID token
           final api =
               ApiService(baseUrl: 'https://celesti-nav.com', apiKey: null);
-          provider.setService(ProviderStatusService(api: api));
+          provider.setService(ProviderStatusService(
+            api: api,
+            tokenSupplier: () async {
+              final auth = context.read<AuthProvider>();
+              return await auth.user?.getIdToken();
+            },
+          ));
           return provider;
         }),
       ],

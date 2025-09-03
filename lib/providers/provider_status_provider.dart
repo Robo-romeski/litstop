@@ -10,9 +10,16 @@ class ProviderStatusProvider with ChangeNotifier {
     RideProvider.uber: false,
     RideProvider.lyft: false,
   };
+  String? _globalError;
+  final Map<RideProvider, String?> _providerError = {
+    RideProvider.uber: null,
+    RideProvider.lyft: null,
+  };
 
   bool get globalOnline => _globalOnline;
   bool isProviderOnline(RideProvider p) => _providerOnline[p] ?? false;
+  String? get globalError => _globalError;
+  String? providerError(RideProvider p) => _providerError[p];
 
   void setService(ProviderStatusPort service) {
     _service = service;
@@ -22,11 +29,13 @@ class ProviderStatusProvider with ChangeNotifier {
     if (_globalOnline == online) return;
     final prev = _globalOnline;
     _globalOnline = online;
+    _globalError = null;
     notifyListeners();
     try {
       await _service?.setGlobalOnline(online);
     } catch (_) {
       _globalOnline = prev;
+      _globalError = 'sync_failed';
       notifyListeners();
       rethrow;
     }
@@ -36,11 +45,13 @@ class ProviderStatusProvider with ChangeNotifier {
     if (_providerOnline[p] == online) return;
     final prev = _providerOnline[p] ?? false;
     _providerOnline[p] = online;
+    _providerError[p] = null;
     notifyListeners();
     try {
       await _service?.setProviderOnline(p, online);
     } catch (_) {
       _providerOnline[p] = prev;
+      _providerError[p] = 'sync_failed';
       notifyListeners();
       rethrow;
     }

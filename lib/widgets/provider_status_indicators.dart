@@ -17,11 +17,13 @@ class ProviderStatusIndicators extends StatelessWidget {
             _StatusChip(
               label: 'Global',
               online: status.globalOnline,
+              error: status.globalError != null,
               onPressed: () => status.setGlobalOnline(!status.globalOnline),
             ),
             _StatusChip(
               label: 'Uber',
               online: status.isProviderOnline(RideProvider.uber),
+              error: status.providerError(RideProvider.uber) != null,
               onPressed: () => status.setProviderOnline(
                 RideProvider.uber,
                 !status.isProviderOnline(RideProvider.uber),
@@ -30,6 +32,7 @@ class ProviderStatusIndicators extends StatelessWidget {
             _StatusChip(
               label: 'Lyft',
               online: status.isProviderOnline(RideProvider.lyft),
+              error: status.providerError(RideProvider.lyft) != null,
               onPressed: () => status.setProviderOnline(
                 RideProvider.lyft,
                 !status.isProviderOnline(RideProvider.lyft),
@@ -45,17 +48,19 @@ class ProviderStatusIndicators extends StatelessWidget {
 class _StatusChip extends StatelessWidget {
   final String label;
   final bool online;
+  final bool error;
   final VoidCallback onPressed;
 
   const _StatusChip({
     required this.label,
     required this.online,
+    this.error = false,
     required this.onPressed,
   });
 
   @override
   Widget build(BuildContext context) {
-    final color = online ? Colors.green : Colors.grey;
+    final color = error ? Colors.red : (online ? Colors.green : Colors.grey);
     final textColor = Theme.of(context).chipTheme.labelStyle?.color;
     return ActionChip(
       avatar: Container(
@@ -67,7 +72,9 @@ class _StatusChip extends StatelessWidget {
         ),
       ),
       label: Text(
-        online ? '$label Online' : '$label Offline',
+        error
+            ? '$label Desynced'
+            : (online ? '$label Online' : '$label Offline'),
         style: TextStyle(color: textColor),
       ),
       onPressed: onPressed,
