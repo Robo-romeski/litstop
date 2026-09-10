@@ -426,7 +426,7 @@ class RouteSuggestionsProvider with ChangeNotifier {
           demandScore: demandScore,
           distance: distance,
           estimatedDuration: duration,
-          description: 'Drive through high demand area',
+          description: 'Drive through a predicted busy area',
         ));
 
         previousPoint = targetPoint;
@@ -596,7 +596,7 @@ class RouteSuggestionsProvider with ChangeNotifier {
   String _generateRouteName(RouteAlgorithm algorithm, int index) {
     final titles = <RouteAlgorithm, List<String>>{
       RouteAlgorithm.demandGreedy: [
-        'High Demand Route',
+        'Predicted busy route',
         'Peak Earnings Path',
         'Prime Time Circuit'
       ],
