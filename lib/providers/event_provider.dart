@@ -82,8 +82,8 @@ class EventProvider with ChangeNotifier {
       RideEvent(
         id: '2',
         type: RideEventType.highDemandArea,
-        title: 'High Demand Detected',
-        description: 'Unusually high demand detected in downtown area.',
+        title: 'Predicted busy area',
+        description: 'More activity than usual downtown.',
         timestamp: now.subtract(const Duration(minutes: 15)),
         location: const LatLng(37.7749, -122.4194),
       ),
@@ -150,8 +150,8 @@ class EventProvider with ChangeNotifier {
         event = RideEvent(
           id: eventId,
           type: eventType,
-          title: 'High Demand Area',
-          description: 'High demand detected near ${_getRandomArea()}.',
+          title: 'Predicted busy area',
+          description: 'More activity expected near ${_getRandomArea()}.',
           timestamp: DateTime.now(),
           location: location,
         );
@@ -203,7 +203,7 @@ class EventProvider with ChangeNotifier {
       case RideEventType.rideCancelled:
         return 'Ride Cancelled';
       case RideEventType.highDemandArea:
-        return 'High Demand Area';
+        return 'Predicted busy area';
       case RideEventType.notification:
         return 'LitStop Update';
     }
@@ -221,7 +221,7 @@ class EventProvider with ChangeNotifier {
       case RideEventType.rideCancelled:
         return 'A ride request has been cancelled by the passenger.';
       case RideEventType.highDemandArea:
-        return 'High ride demand detected in your area.';
+        return 'More activity expected in your area.';
       case RideEventType.notification:
         final notifications = [
           'New promotions available in your area.',

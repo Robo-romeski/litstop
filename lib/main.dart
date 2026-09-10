@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import 'firebase_options.dart';
 import 'screens/splash_screen.dart';
 import 'providers/location_provider.dart';
@@ -17,8 +18,16 @@ import 'providers/poi_provider.dart';
 import 'providers/route_suggestions_provider.dart';
 import 'providers/fatigue_monitoring_provider.dart';
 import 'providers/provider_status_provider.dart';
+import 'providers/journey_provider.dart';
 import 'services/api_service.dart';
+import 'services/journey_geocoder.dart';
+import 'services/place_service.dart';
 import 'services/provider_status_service.dart';
+import 'services/routes_service.dart';
+import 'services/busy_zone_selector.dart';
+import 'services/constraint_poi.dart';
+import 'services/journey_store.dart';
+import 'config/maps_config.dart';
 import 'utils/secure_storage.dart';
 import 'widgets/fatigue_alert_manager.dart';
 
@@ -34,49 +43,11 @@ void main() async {
       options: DefaultFirebaseOptions.currentPlatform,
     );
     print('Firebase initialized successfully');
-
-    // Try to create test user in Firebase Auth
-    try {
-      await createTestUserIfNeeded();
-    } catch (e) {
-      print('Failed to create test user: $e');
-    }
   } catch (e) {
     print('Firebase initialization failed: $e');
     // Continue without Firebase for demo purposes
   }
   runApp(const MyApp());
-}
-
-// Create a test user in Firebase if it doesn't exist already
-Future<void> createTestUserIfNeeded() async {
-  try {
-    final auth = firebase_auth.FirebaseAuth.instance;
-
-    // Try to create a test user
-    try {
-      print('Attempting to create test user...');
-      final userCredential = await auth.createUserWithEmailAndPassword(
-        email: 'test@test.com',
-        password: 'password123',
-      );
-      print(
-          'Test user created successfully with ID: ${userCredential.user?.uid}');
-      await auth.signOut(); // Sign out after creation
-    } catch (e) {
-      if (e is firebase_auth.FirebaseAuthException &&
-          e.code == 'email-already-in-use') {
-        // User already exists, which is fine
-        print('Test user already exists');
-      } else {
-        print('Error creating test user: $e');
-        // We'll still continue even if this fails
-      }
-    }
-  } catch (e) {
-    print('Error in createTestUserIfNeeded: $e');
-    // We catch but don't rethrow to ensure the app continues even if test user creation fails
-  }
 }
 
 class MyApp extends StatelessWidget {
@@ -123,6 +94,48 @@ class MyApp extends StatelessWidget {
               ),
         ),
         ChangeNotifierProvider(create: (_) => FatigueMonitoringProvider()),
+        ChangeNotifierProvider(create: (context) {
+          final tts = FlutterTts();
+          return JourneyProvider(
+            locator: PlaceStopLocator(places: PlaceService()),
+            router: MapsConfig.hasKey ? RoutesService() : null,
+            zoneSupplier: () {
+              final heatmap = context.read<HeatmapProvider>();
+              final events = context.read<EventProvider>();
+              final position = context.read<LocationProvider>().currentPosition;
+              return buildPredictedBusyZones(
+                now: DateTime.now(),
+                hotspots: heatmap.hotspots,
+                eventLocations: [
+                  for (final event in events.events)
+                    if (event.location != null) event.location!,
+                ],
+                fallbackCenter: position == null
+                    ? null
+                    : LatLng(position.latitude, position.longitude),
+              );
+            },
+            speak: (text) async {
+              try {
+                await tts.setLanguage('en-US');
+                await tts.speak(text);
+              } catch (_) {}
+            },
+            store: SharedPreferencesJourneyStore(),
+            autoTick: const Duration(seconds: 30),
+            needsRest: () =>
+                context.read<FatigueMonitoringProvider>().shouldTakeBreak,
+            findConstraint: (kind, from) async {
+              final poi = context.read<POIProvider>();
+              return pickConstraintPoi(
+                kind: kind,
+                from: from,
+                pois: poi.pois,
+                stations: poi.gasStations,
+              );
+            },
+          );
+        }),
         ChangeNotifierProvider(create: (context) {
           final provider = ProviderStatusProvider();
           // Configure backend proxy to celesti-nav.com and attach Firebase ID token
