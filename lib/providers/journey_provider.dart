@@ -274,7 +274,7 @@ class JourneyProvider with ChangeNotifier {
     final prompt = kind == JourneyStopKind.fuel
         ? 'Fuel is low. Adding a gas stop at $title. Skip if you want to keep driving.'
         : 'Fatigue limit reached. Adding a rest stop at $title. Skip if you want to keep driving.';
-    if (_speak != null) await _speak!(prompt);
+    if (_speak != null) await _speak(prompt);
 
     _active = journey.copyWith(
       stops: [
@@ -337,7 +337,7 @@ class JourneyProvider with ChangeNotifier {
     final speech = nextActionSpeech;
     if (speech == null || speech == _lastSpoken) return;
     _lastSpoken = speech;
-    if (_speak != null) await _speak!(speech);
+    if (_speak != null) await _speak(speech);
   }
 
   void _syncTicker() {
