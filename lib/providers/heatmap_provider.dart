@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../services/busy_zone_selector.dart';
 import '../utils/heatmap_utils.dart';
 
 /// Provider for managing heatmap data and state
@@ -75,8 +76,8 @@ class HeatmapProvider with ChangeNotifier {
           position: hotspot,
           icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
           infoWindow: InfoWindow(
-            title: 'Demand Hotspot',
-            snippet: 'High demand area',
+            title: PredictedActivityCopy.zoneTitle,
+            snippet: PredictedActivityCopy.zoneSnippet,
           ),
         ),
       );
@@ -96,6 +97,8 @@ class HeatmapProvider with ChangeNotifier {
     _isLoading = true;
     _error = null;
     notifyListeners();
+
+    _seedPredictedZonesIfEmpty(center);
 
     try {
       // In a real app, this would be an API call to fetch heatmap data
@@ -202,6 +205,17 @@ class HeatmapProvider with ChangeNotifier {
 
       await updateHeatmapForLocation(center);
     }
+  }
+
+  void _seedPredictedZonesIfEmpty(LatLng center) {
+    if (_hotspots.isNotEmpty) return;
+    _hotspots = [
+      for (final zone in buildPredictedBusyZones(
+        now: DateTime.now(),
+        fallbackCenter: center,
+      ))
+        zone.location,
+    ];
   }
 
   /// Add a new hotspot at the given location

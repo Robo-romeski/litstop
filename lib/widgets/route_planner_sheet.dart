@@ -198,48 +198,44 @@ class _RoutePlannerSheetState extends State<RoutePlannerSheet> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TypeAheadField<PlaceSuggestion>(
-              textFieldConfiguration: TextFieldConfiguration(
-                controller: _endController,
-                focusNode: _endFocusNode,
-                decoration: InputDecoration(
-                  labelText: 'Destination',
-                  hintText: 'Enter destination (city, address)',
-                  border: const OutlineInputBorder(),
-                  prefixIcon: const Icon(Icons.location_on),
-                  filled: true,
-                  helperText: _endLocation != null
-                      ? 'Location selected ✓'
-                      : 'Type at least 1 character to search',
-                  helperStyle: TextStyle(
-                    color:
-                        _endLocation != null ? Colors.green : Colors.grey[600],
-                    fontWeight: _endLocation != null
-                        ? FontWeight.bold
-                        : FontWeight.normal,
+              builder: (context, controller, focusNode) {
+                return TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  decoration: InputDecoration(
+                    labelText: 'Destination',
+                    hintText: 'Enter destination (city, address)',
+                    border: const OutlineInputBorder(),
+                    prefixIcon: const Icon(Icons.location_on),
+                    filled: true,
+                    helperText: _endLocation != null
+                        ? 'Location selected ✓'
+                        : 'Type at least 1 character to search',
+                    helperStyle: TextStyle(
+                      color:
+                          _endLocation != null ? Colors.green : Colors.grey[600],
+                      fontWeight: _endLocation != null
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
                   ),
-                ),
-                onChanged: (value) {
-                  // Clear the selected location if user changes the text
-                  if (_endLocation != null && value != _endController.text) {
-                    setState(() {
-                      _endLocation = null;
-                      _selectedPlaceId = null;
-                    });
-                  }
-                },
-              ),
+                  onChanged: (value) {
+                    if (_endLocation != null && value.isNotEmpty) {
+                      setState(() {
+                        _endLocation = null;
+                        _selectedPlaceId = null;
+                      });
+                    }
+                  },
+                );
+              },
               suggestionsCallback: (pattern) async {
-                // Allow search with just 1 character
-                if (pattern.isEmpty) {
-                  return [];
-                }
+                if (pattern.isEmpty) return [];
                 try {
                   final suggestions =
                       await _placeService.getPlaceSuggestions(pattern);
-                  print('Got ${suggestions.length} suggestions for "$pattern"');
                   return suggestions;
-                } catch (e) {
-                  print('Error getting suggestions: $e');
+                } catch (_) {
                   return [];
                 }
               },
@@ -253,15 +249,11 @@ class _RoutePlannerSheetState extends State<RoutePlannerSheet> {
                   ),
                 );
               },
-              onSuggestionSelected: (suggestion) async {
-                print('Selected suggestion: ${suggestion.description}');
+              onSelected: (suggestion) async {
                 setState(() {
-                  _endController.text = suggestion.description;
                   _selectedPlaceId = suggestion.placeId;
                   _error = null;
                 });
-
-                // Visual feedback
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text('Selected: ${suggestion.description}'),
@@ -269,86 +261,31 @@ class _RoutePlannerSheetState extends State<RoutePlannerSheet> {
                     backgroundColor: Colors.green,
                   ),
                 );
-
-                // Show loading indicator
-                setState(() {
-                  _isLoading = true;
-                });
-
-                // Get place details to get the coordinates
+                setState(() => _isLoading = true);
                 try {
                   final place =
                       await _placeService.getPlaceDetails(suggestion.placeId);
-
-                  // Check if still mounted before updating state
                   if (!mounted) return;
-
                   setState(() {
                     _endLocation = place.location;
-                    _error = null; // Clear any previous errors
                     _isLoading = false;
                   });
-                  print(
-                      'Location set: ${place.location.latitude}, ${place.location.longitude}');
-
-                  // Show a confirmation dialog
-                  if (mounted) {
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Location Selected'),
-                        content: Text(
-                            'Destination set to ${suggestion.description}.\n\nCoordinates: ${place.location.latitude.toStringAsFixed(4)}, ${place.location.longitude.toStringAsFixed(4)}'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
                 } catch (e) {
-                  print('Error getting place details: $e');
-                  if (mounted) {
-                    setState(() {
-                      _error = 'Error getting location details: $e';
-                      _isLoading = false;
-                    });
-
-                    // Show error dialog
-                    showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                        title: const Text('Error'),
-                        content: Text('Failed to get location details: $e'),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
+                  if (!mounted) return;
+                  setState(() {
+                    _error = 'Error getting location details: $e';
+                    _isLoading = false;
+                  });
                 }
               },
-              suggestionsBoxDecoration: SuggestionsBoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                elevation: 8.0, // Increased elevation for better visibility
-                color: Theme.of(context).cardColor,
-                shadowColor: Colors.black54,
-                constraints: const BoxConstraints(
-                    maxHeight: 300), // Allow for more visible suggestions
-              ),
-              debounceDuration:
-                  const Duration(milliseconds: 200), // Quicker response
+
+              debounceDuration: const Duration(milliseconds: 200),
               hideOnEmpty: false,
               hideOnLoading: false,
               hideOnError: false,
-              keepSuggestionsOnLoading: true,
+
               animationDuration: const Duration(milliseconds: 300),
-              noItemsFoundBuilder: (context) => Padding(
+              emptyBuilder: (context) => Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,

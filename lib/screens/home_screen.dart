@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,7 @@ import '../providers/forecast_provider.dart';
 import '../providers/heatmap_provider.dart';
 import '../providers/event_provider.dart';
 import '../providers/poi_provider.dart';
+import '../providers/journey_provider.dart';
 import '../models/poi_filter.dart';
 import '../models/point_of_interest.dart';
 import '../widgets/demand_forecast_chart.dart';
@@ -24,6 +27,8 @@ import '../widgets/route_planner_sheet.dart';
 import '../widgets/poi_details_sheet.dart';
 import '../services/navigation_service.dart';
 import 'fatigue_test_screen.dart';
+import '../widgets/home_copilot_bar.dart';
+import '../services/busy_zone_selector.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -313,11 +318,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _updateMapLocation() {
     final location = context.read<LocationProvider>().currentPosition;
-    if (location != null && _mapController != null) {
+    if (location == null) return;
+    final point = LatLng(location.latitude, location.longitude);
+    context.read<JourneyProvider>().recordTracePoint(point);
+    unawaited(context.read<JourneyProvider>().tick(here: point));
+    if (_mapController != null) {
       _mapController!.animateCamera(
-        CameraUpdate.newLatLng(
-          LatLng(location.latitude, location.longitude),
-        ),
+        CameraUpdate.newLatLng(point),
       );
     }
   }
@@ -373,9 +380,8 @@ class _HomeScreenState extends State<HomeScreen> {
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Add Hotspot'),
-        content:
-            const Text('Do you want to add a demand hotspot at this location?'),
+        title: const Text(PredictedActivityCopy.addZoneTitle),
+        content: const Text(PredictedActivityCopy.addZoneBody),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
@@ -387,7 +393,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Navigator.of(context).pop();
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(
-                  content: Text('Hotspot added'),
+                  content: Text(PredictedActivityCopy.addZoneConfirm),
                   backgroundColor: Colors.green,
                 ),
               );
@@ -502,6 +508,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final heatmapProvider = context.watch<HeatmapProvider>();
     final eventProvider = context.watch<EventProvider>();
     final poiProvider = context.watch<POIProvider>();
+    final journeyProvider = context.watch<JourneyProvider>();
 
     return Stack(
       children: [
@@ -544,7 +551,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ..._markers,
             ...heatmapProvider.hotspotMarkers,
             ...poiProvider.allMarkers,
+            ...journeyProvider.markers,
           },
+          polylines: journeyProvider.polylines,
           circles: heatmapProvider.heatmapCircles,
           myLocationEnabled: true,
           myLocationButtonEnabled: false, // We'll provide our own button
@@ -909,6 +918,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ? _buildMapError()
                     : _buildMapContent(),
           ),
+          const HomeCopilotBar(),
           Container(
             padding: const EdgeInsets.all(16),
             child: Column(
