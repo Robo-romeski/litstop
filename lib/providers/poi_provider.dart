@@ -59,10 +59,15 @@ class POIProvider extends ChangeNotifier {
   /// Current BuildContext for showing UI components
   BuildContext? _currentContext;
 
-  /// Default constructor
-  POIProvider({String? apiKeyPOI, String? apiKeyGas})
-      : _poiService = POIService(apiKey: apiKeyPOI),
-        _gasPriceService = GasPriceService(apiKey: apiKeyGas);
+  /// Default constructor with optional dependency injection for testing
+  POIProvider({
+    String? apiKeyPOI,
+    String? apiKeyGas,
+    POIService? poiService,
+    GasPriceService? gasPriceService,
+  })  : _poiService = poiService ?? POIService(apiKey: apiKeyPOI),
+        _gasPriceService =
+            gasPriceService ?? GasPriceService(apiKey: apiKeyGas);
 
   /// Get all POIs (unmodifiable)
   UnmodifiableListView<PointOfInterest> get pois => UnmodifiableListView(_pois);

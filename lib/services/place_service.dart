@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../config/maps_config.dart';
 
 /// Model class for place suggestion
 class PlaceSuggestion {
@@ -68,15 +68,17 @@ class Place {
 
 /// Service for handling Google Places API requests
 class PlaceService {
-  /// In a real app, store this in a secure place and don't expose it in the code
-  static const String _apiKey = 'YOUR_GOOGLE_PLACES_API_KEY';
+  final String _apiKey;
+  final bool _useMockData;
+  final http.Client _client;
 
-  /// For development, we'll use mock suggestions
-  /// To use the real Google Places API:
-  /// 1. Set this to false
-  /// 2. Add a valid API key above
-  /// 3. Enable Places API in Google Cloud Console
-  static const bool _useMockData = true;
+  PlaceService({
+    String? apiKey,
+    bool? useMockData,
+    http.Client? client,
+  })  : _apiKey = apiKey ?? MapsConfig.apiKey,
+        _client = client ?? http.Client(),
+        _useMockData = useMockData ?? (apiKey ?? MapsConfig.apiKey).isEmpty;
 
   /// Get place suggestions based on input
   Future<List<PlaceSuggestion>> getPlaceSuggestions(String input) async {
@@ -87,11 +89,13 @@ class PlaceService {
       return suggestions;
     }
 
-    final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$_apiKey',
+    final url = Uri.https(
+      'maps.googleapis.com',
+      '/maps/api/place/autocomplete/json',
+      {'input': input, 'key': _apiKey},
     );
 
-    final response = await http.get(url);
+    final response = await _client.get(url);
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
@@ -113,19 +117,19 @@ class PlaceService {
   Future<Place> getPlaceDetails(String placeId) async {
     print('Getting place details for ID: $placeId');
     if (_useMockData) {
-      // Add a small delay to simulate network latency
-      await Future.delayed(const Duration(milliseconds: 500));
       final place = _getMockPlaceDetail(placeId);
       print(
           'Found mock place: ${place.name} at ${place.location.latitude}, ${place.location.longitude}');
       return place;
     }
 
-    final url = Uri.parse(
-      'https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$_apiKey',
+    final url = Uri.https(
+      'maps.googleapis.com',
+      '/maps/api/place/details/json',
+      {'place_id': placeId, 'key': _apiKey},
     );
 
-    final response = await http.get(url);
+    final response = await _client.get(url);
 
     if (response.statusCode == 200) {
       final result = json.decode(response.body);
@@ -153,6 +157,8 @@ class PlaceService {
     // List of mock places
     final mockPlaces = [
       {'place_id': 'mock_sf', 'description': 'San Francisco, CA, USA'},
+      {'place_id': 'mock_lincoln_hs', 'description': 'Lincoln High School, San Francisco, CA, USA'},
+      {'place_id': 'mock_sfo_airport', 'description': 'San Francisco International Airport (SFO), CA, USA'},
       {'place_id': 'mock_nyc', 'description': 'New York, NY, USA'},
       {'place_id': 'mock_chicago', 'description': 'Chicago, IL, USA'},
       {'place_id': 'mock_la', 'description': 'Los Angeles, CA, USA'},
@@ -232,6 +238,26 @@ class PlaceService {
   Place _getMockPlaceDetail(String placeId) {
     // Map of mock place details keyed by place_id
     final mockPlaceDetails = {
+      'mock_sfo_airport': {
+        'result': {
+          'place_id': 'mock_sfo_airport',
+          'formatted_address': 'San Francisco International Airport, San Francisco, CA, USA',
+          'name': 'San Francisco International Airport (SFO)',
+          'geometry': {
+            'location': {'lat': 37.6213, 'lng': -122.3790}
+          }
+        }
+      },
+      'mock_lincoln_hs': {
+        'result': {
+          'place_id': 'mock_lincoln_hs',
+          'formatted_address': '2162 24th Ave, San Francisco, CA 94116, USA',
+          'name': 'Lincoln High School',
+          'geometry': {
+            'location': {'lat': 37.7416, 'lng': -122.4810}
+          }
+        }
+      },
       'mock_sf': {
         'result': {
           'place_id': 'mock_sf',
