@@ -177,8 +177,8 @@ class _EventsScreenState extends State<EventsScreen> {
             final event = RideEvent(
               id: DateTime.now().millisecondsSinceEpoch.toString(),
               type: RideEventType.highDemandArea,
-              title: 'High Demand Alert',
-              description: 'New high demand area detected nearby.',
+              title: 'Predicted busy area',
+              description: 'New predicted busy zone nearby.',
               timestamp: DateTime.now(),
               location: randomLocation,
             );

@@ -188,8 +188,8 @@ class ForecastProvider with ChangeNotifier {
 
       String timeInfo = '${(now.hour + i) % 24}:00';
       String demandInfo = isPeak
-          ? 'Peak hours - High demand expected'
-          : (value > 15 ? 'Above average demand' : 'Moderate demand');
+          ? 'Peak hours - more activity expected'
+          : (value > 15 ? 'Above average activity' : 'Moderate activity');
 
       data.add(TimeSeriesPoint(
         label: '+${i}hr',
